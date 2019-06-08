@@ -1,0 +1,41 @@
+service: sample-rest-api
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  memorySize: 128
+  stage: prod
+  region: eu-west-3
+
+package:
+  exclude:
+    - .idea/**
+    - .nyc_output/**
+    - coverage/**
+    - spec/**
+    - .eslintrc.json
+    - .gitignore
+    - .travis.yml
+    - package.json
+    - package-lock.json
+    - serverless.yml
+    - README.md
+  include:
+    - app/**
+    - seed/**
+
+functions:
+  restApi:
+    handler: app/handlers/index.handler
+    events:
+      - http:
+          path: /players
+          method: get
+
+      - http:
+          path: /players/{id}
+          method: get
+
+      - http:
+          path: /players/{id}
+          method: delete
