@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../../app');
+const Player = require('../../app/models/player');
 
 describe('GET /players', () => {
   context('with an empty database', () => {
@@ -8,6 +9,25 @@ describe('GET /players', () => {
         .get('/players')
         .expect('Content-Type', /json/)
         .expect(200, { players: [] })
+    ));
+  });
+
+  context('with a database containing some players', () => {
+    before(() => {
+      Player.seed([
+        { id: 58, firstname: 'William', lastname: 'Doe' },
+        { id: 32, firstname: 'John', lastname: 'Smith' }
+      ]);
+    });
+
+    it('responds with an array contaning the players sorted by their id', async () => (
+      request(app)
+        .get('/players')
+        .expect('Content-Type', /json/)
+        .expect(200, { players: [
+            { id: 32, firstname: 'John', lastname: 'Smith' },
+            { id: 58, firstname: 'William', lastname: 'Doe' }
+          ] })
     ));
   });
 });

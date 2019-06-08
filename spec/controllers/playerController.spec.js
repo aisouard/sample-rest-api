@@ -40,6 +40,30 @@ describe('PlayerController', () => {
         });
       });
     });
+
+    context('with a database containing some players', () => {
+      before(async () => {
+        Player.findAll.returns([
+          { id: 32, firstname: 'John', lastname: 'Smith' },
+          { id: 58, firstname: 'William', lastname: 'Doe' }
+        ]);
+        await PlayerController.index({}, { status });
+      });
+
+      after(() => {
+        sandbox.resetHistory();
+      });
+
+      it('returns status 200 with the retrieved data', () => {
+        expect(status).to.have.been.calledWithExactly(200);
+        expect(json).to.have.been.calledWithExactly({
+          players: [
+            { id: 32, firstname: 'John', lastname: 'Smith' },
+            { id: 58, firstname: 'William', lastname: 'Doe' }
+          ]
+        });
+      });
+    });
   });
 
   describe('.get', () => {
