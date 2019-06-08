@@ -4,6 +4,8 @@ const sinonChai = require('sinon-chai');
 const rewire = require('rewire');
 
 const sandbox = sinon.createSandbox();
+const Player = require('../helpers/fakePlayer')(sandbox);
+
 const { expect } = chai;
 chai.use(sinonChai);
 
@@ -17,12 +19,18 @@ describe('PlayerController', () => {
     status = sandbox.stub().returns({ json });
 
     PlayerController = rewire('../../app/controllers/playerController');
+    PlayerController.__set__('Player', Player);
   });
 
   describe('.index', () => {
     context('with an empty database', () => {
       before(async () => {
+        Player.findAll.returns([]);
         await PlayerController.index({}, { status });
+      });
+
+      after(() => {
+        sandbox.resetHistory();
       });
 
       it('returns status 200 with an empty array', () => {
