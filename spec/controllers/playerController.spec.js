@@ -71,12 +71,35 @@ describe('PlayerController', () => {
   describe('.get', () => {
     context('with an unknown player id', () => {
       before(async () => {
-        await PlayerController.get({ body: { id: 24 } }, { status });
+        Player.findById.withArgs(24).returns(null);
+        await PlayerController.get({ params: { id: 24 } }, { status });
+      });
+
+      after(() => {
+        sandbox.resetHistory();
       });
 
       it('returns status 404 with an empty body', () => {
+        expect(Player.findById).to.have.been.calledOnceWithExactly(24);
         expect(status).to.have.been.calledWithExactly(404);
         expect(json).to.have.been.calledWithExactly(null);
+      });
+    });
+
+    context('with a known player id', () => {
+      before(async () => {
+        Player.findById.withArgs(32).returns({ id: 32, firstname: 'John', lastname: 'Smith' });
+        await PlayerController.get({ params: { id: 32 } }, { status });
+      });
+
+      after(() => {
+        sandbox.resetHistory();
+      });
+
+      it('returns status 200 with the retrieved data', () => {
+        expect(Player.findById).to.have.been.calledOnceWithExactly(32);
+        expect(status).to.have.been.calledWithExactly(200);
+        expect(json).to.have.been.calledWithExactly({ id: 32, firstname: 'John', lastname: 'Smith' });
       });
     });
   });
