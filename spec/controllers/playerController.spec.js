@@ -36,9 +36,7 @@ describe('PlayerController', () => {
       it('returns status 200 with an empty array', () => {
         expect(Player.findAll).to.have.been.calledOnce;
         expect(status).to.have.been.calledWithExactly(200);
-        expect(json).to.have.been.calledWithExactly({
-          players: []
-        });
+        expect(json).to.have.been.calledWithExactly([]);
       });
     });
 
@@ -58,12 +56,10 @@ describe('PlayerController', () => {
       it('returns status 200 with the retrieved data', () => {
         expect(Player.findAll).to.have.been.calledOnce;
         expect(status).to.have.been.calledWithExactly(200);
-        expect(json).to.have.been.calledWithExactly({
-          players: [
-            { id: 32, firstname: 'John', lastname: 'Smith' },
-            { id: 58, firstname: 'William', lastname: 'Doe' }
-          ]
-        });
+        expect(json).to.have.been.calledWithExactly([
+          { id: 32, firstname: 'John', lastname: 'Smith' },
+          { id: 58, firstname: 'William', lastname: 'Doe' }
+        ]);
       });
     });
   });

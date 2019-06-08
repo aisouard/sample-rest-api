@@ -2,9 +2,7 @@ const Player = require('../models/player');
 
 module.exports = {
   index: async (req, res, next) => (
-    res.status(200).json({
-      players: await Player.findAll()
-    })
+    res.status(200).json(await Player.findAll())
   ),
   get: async (req, res, next) => {
     const player = Player.findById(parseInt(req.params.id, 10));

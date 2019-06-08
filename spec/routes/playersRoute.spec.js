@@ -13,7 +13,7 @@ describe('GET /players', () => {
       request(app)
         .get('/players')
         .expect('Content-Type', /json/)
-        .expect(200, { players: [] })
+        .expect(200, [])
     ));
   });
 
@@ -29,12 +29,10 @@ describe('GET /players', () => {
       request(app)
         .get('/players')
         .expect('Content-Type', /json/)
-        .expect(200, {
-          players: [
-            { id: 32, firstname: 'John', lastname: 'Smith' },
-            { id: 58, firstname: 'William', lastname: 'Doe' }
-          ]
-        })
+        .expect(200, [
+          { id: 32, firstname: 'John', lastname: 'Smith' },
+          { id: 58, firstname: 'William', lastname: 'Doe' }
+        ])
     ));
   });
 });
