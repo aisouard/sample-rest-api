@@ -106,7 +106,7 @@ describe('PlayerController', () => {
     context('with an unknown player id', () => {
       before(async () => {
         Player.removeById.withArgs(58).returns(false);
-        await PlayerController.delete({ params: { id: 58 } }, { status, status });
+        await PlayerController.delete({ params: { id: 58 } }, { status });
       });
 
       after(() => {
@@ -123,7 +123,7 @@ describe('PlayerController', () => {
     context('with a known player id', () => {
       before(async () => {
         Player.removeById.withArgs(77).returns(true);
-        await PlayerController.delete({ params: { id: 77 } }, { status, status });
+        await PlayerController.delete({ params: { id: 77 } }, { status });
       });
 
       after(() => {
