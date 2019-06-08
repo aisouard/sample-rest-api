@@ -11,12 +11,14 @@ chai.use(sinonChai);
 
 describe('PlayerController', () => {
   let PlayerController;
+  let send;
   let status;
   let json;
 
   before(() => {
     json = sandbox.stub();
-    status = sandbox.stub().returns({ json });
+    send = sandbox.stub();
+    status = sandbox.stub().returns({ json, send });
 
     PlayerController = rewire('../../app/controllers/playerController');
     PlayerController.__set__('Player', Player);
@@ -77,8 +79,8 @@ describe('PlayerController', () => {
 
       it('returns status 404 with an empty body', () => {
         expect(Player.findById).to.have.been.calledOnceWithExactly(24);
-        expect(status).to.have.been.calledWithExactly(404);
-        expect(json).to.have.been.calledWithExactly(null);
+        expect(status).to.have.been.calledOnceWithExactly(404);
+        expect(send).to.have.been.calledOnceWithExactly();
       });
     });
 
@@ -104,7 +106,7 @@ describe('PlayerController', () => {
     context('with an unknown player id', () => {
       before(async () => {
         Player.removeById.withArgs(58).returns(false);
-        await PlayerController.delete({ params: { id: 58 } }, { status });
+        await PlayerController.delete({ params: { id: 58 } }, { status, status });
       });
 
       after(() => {
@@ -114,14 +116,14 @@ describe('PlayerController', () => {
       it('returns status 404 with an empty body', async () => {
         expect(Player.removeById).to.have.been.calledOnceWithExactly(58);
         expect(status).to.have.been.calledWithExactly(404);
-        expect(json).to.have.been.calledWithExactly(null);
+        expect(send).to.have.been.calledOnceWithExactly();
       });
     });
 
     context('with a known player id', () => {
       before(async () => {
         Player.removeById.withArgs(77).returns(true);
-        await PlayerController.delete({ params: { id: 77 } }, { status });
+        await PlayerController.delete({ params: { id: 77 } }, { status, status });
       });
 
       after(() => {
@@ -131,7 +133,7 @@ describe('PlayerController', () => {
       it('returns status 204 with an empty body', async () => {
         expect(Player.removeById).to.have.been.calledOnceWithExactly(77);
         expect(status).to.have.been.calledWithExactly(204);
-        expect(json).to.have.been.calledWithExactly(null);
+        expect(send).to.have.been.calledOnceWithExactly();
       });
     });
   });

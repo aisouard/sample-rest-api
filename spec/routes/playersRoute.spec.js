@@ -46,7 +46,7 @@ describe('GET /players/:id', () => {
     it('returns a 404 status code', async () => (
       request(app)
         .get('/players/1')
-        .expect(404)
+        .expect(404, {})
     ));
   });
 
@@ -60,7 +60,7 @@ describe('GET /players/:id', () => {
     it('returns a 404 status code', async () => (
       request(app)
         .get('/players/1')
-        .expect(404)
+        .expect(404, {})
     ));
   });
 
@@ -88,7 +88,7 @@ describe('DELETE /players/:id', () => {
     it('returns a 404 status code', async () => (
       request(app)
         .delete('/players/1')
-        .expect(404)
+        .expect(404, {})
     ));
 
     it('doesn\'t change anything from the repository', () => {
@@ -107,7 +107,7 @@ describe('DELETE /players/:id', () => {
     it('returns a 404 status code', async () => (
       request(app)
         .delete('/players/1')
-        .expect(404)
+        .expect(404, {})
     ));
 
     it('doesn\'t change anything from the repository', () => {
@@ -129,7 +129,7 @@ describe('DELETE /players/:id', () => {
     it('returns a 204 status code', async () => (
       request(app)
         .delete('/players/32')
-        .expect(204)
+        .expect(204, {})
     ));
 
     it('deletes the specified player from the repository', () => {
@@ -142,7 +142,7 @@ describe('DELETE /players/:id', () => {
     it('returns a 404 status code when trying again', async () => (
       request(app)
         .delete('/players/32')
-        .expect(404)
+        .expect(404, {})
     ));
   });
 });
