@@ -4,6 +4,10 @@ const Player = require('../../app/models/player');
 
 describe('GET /players', () => {
   context('with an empty database', () => {
+    before(() => {
+      Player.repository = [];
+    });
+
     it('responds with an empty array', async () => (
       request(app)
         .get('/players')
