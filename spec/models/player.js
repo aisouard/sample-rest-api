@@ -101,4 +101,73 @@ describe('Player', () => {
       });
     });
   });
+
+  describe('removeById', () => {
+    context('with an empty repository', () => {
+      let result;
+
+      before(() => {
+        Player.repository = [];
+        result = Player.removeById(25);
+      });
+
+      it('returns false', () => {
+        expect(result).to.be.false;
+      });
+
+      it('doesn\'t change anything inside the repository', () => {
+        expect(Player.repository).to.be.an('array');
+        expect(Player.repository).to.be.empty;
+      });
+    });
+
+    context('with a populated repository but unknown id', () => {
+      let result;
+
+      before(() => {
+        Player.repository = [
+          { id: 12, firstname: 'Rafael', lastname: 'Nadal' },
+          { id: 38, firstname: 'Dominic', lastname: 'Thiem' },
+          { id: 25, firstname: 'Bill', lastname: 'Hoover' }
+        ];
+        result = Player.removeById(58);
+      });
+
+      it('returns false', () => {
+        expect(result).to.be.false;
+      });
+
+      it('doesn\'t change anything inside the repository', () => {
+        expect(Player.repository).to.deep.equal([
+          { id: 12, firstname: 'Rafael', lastname: 'Nadal' },
+          { id: 38, firstname: 'Dominic', lastname: 'Thiem' },
+          { id: 25, firstname: 'Bill', lastname: 'Hoover' }
+        ]);
+      });
+    });
+
+    context('with a populated repository and known id', () => {
+      let result;
+
+      before(() => {
+        Player.repository = [
+          { id: 12, firstname: 'Rafael', lastname: 'Nadal' },
+          { id: 38, firstname: 'Dominic', lastname: 'Thiem' },
+          { id: 25, firstname: 'Bill', lastname: 'Hoover' }
+        ];
+        result = Player.removeById(38);
+      });
+
+      it('returns true', () => {
+        expect(result).to.be.true;
+      });
+
+      it('deletes the right item from its specified id', () => {
+        expect(Player.repository).to.deep.equal([
+          { id: 12, firstname: 'Rafael', lastname: 'Nadal' },
+          { id: 25, firstname: 'Bill', lastname: 'Hoover' }
+        ]);
+      });
+    });
+  });
 });
