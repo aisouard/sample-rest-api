@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:unit": "nyc --reporter=lcov --reporter=text mocha --recursive spec/controllers",
+    "test:integration": "nyc --reporter=lcov --reporter=text mocha --recursive spec/routes"
   },
   "dependencies": {
     "express": "~4.16.1",
