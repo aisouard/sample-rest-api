@@ -34,6 +34,7 @@ describe('PlayerController', () => {
       });
 
       it('returns status 200 with an empty array', () => {
+        expect(Player.findAll).to.have.been.calledOnce;
         expect(status).to.have.been.calledWithExactly(200);
         expect(json).to.have.been.calledWithExactly({
           players: []
@@ -55,6 +56,7 @@ describe('PlayerController', () => {
       });
 
       it('returns status 200 with the retrieved data', () => {
+        expect(Player.findAll).to.have.been.calledOnce;
         expect(status).to.have.been.calledWithExactly(200);
         expect(json).to.have.been.calledWithExactly({
           players: [
