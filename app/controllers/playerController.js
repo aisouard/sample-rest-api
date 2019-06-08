@@ -13,7 +13,11 @@ module.exports = {
     }
     return res.status(200).json(player);
   },
-  delete: async (req, res, next) => (
-    res.status(404).json(null)
-  )
+  delete: async (req, res, next) => {
+    const result = Player.removeById(parseInt(req.params.id, 10));
+    if (!result) {
+      return res.status(404).json(null);
+    }
+    return res.status(204).json(null);
+  }
 };

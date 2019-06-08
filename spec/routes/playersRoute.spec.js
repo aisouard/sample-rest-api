@@ -1,3 +1,4 @@
+const { expect } = require('chai');
 const request = require('supertest');
 const app = require('../../app');
 const Player = require('../../app/models/player');
@@ -81,10 +82,68 @@ describe('GET /players/:id', () => {
 });
 
 describe('DELETE /players/:id', () => {
-  context('with a non-existant player id', () => {
+  context('with an empty database', () => {
+    before(() => {
+      Player.repository = [];
+    });
+
     it('returns a 404 status code', async () => (
       request(app)
         .delete('/players/1')
+        .expect(404)
+    ));
+
+    it('doesn\'t change anything from the repository', () => {
+      expect(Player.repository).to.be.an('array');
+      expect(Player.repository).to.be.empty;
+    });
+  });
+
+  context('with a non-existant player id', () => {
+    before(() => {
+      Player.repository = [
+        { id: 23, firstname: 'Dominic', lastname: 'Thiem' }
+      ];
+    });
+
+    it('returns a 404 status code', async () => (
+      request(app)
+        .delete('/players/1')
+        .expect(404)
+    ));
+
+    it('doesn\'t change anything from the repository', () => {
+      expect(Player.repository).to.deep.equal([
+        { id: 23, firstname: 'Dominic', lastname: 'Thiem' }
+      ]);
+    });
+  });
+
+  context('with an existing player id', () => {
+    before(() => {
+      Player.repository = [
+        { id: 23, firstname: 'Dominic', lastname: 'Thiem' },
+        { id: 32, firstname: 'John', lastname: 'Smith' },
+        { id: 58, firstname: 'William', lastname: 'Doe' }
+      ];
+    });
+
+    it('returns a 204 status code', async () => (
+      request(app)
+        .delete('/players/32')
+        .expect(204)
+    ));
+
+    it('deletes the specified player from the repository', () => {
+      expect(Player.repository).to.deep.equal([
+        { id: 23, firstname: 'Dominic', lastname: 'Thiem' },
+        { id: 58, firstname: 'William', lastname: 'Doe' }
+      ]);
+    });
+
+    it('returns a 404 status code when trying again', async () => (
+      request(app)
+        .delete('/players/32')
         .expect(404)
     ));
   });

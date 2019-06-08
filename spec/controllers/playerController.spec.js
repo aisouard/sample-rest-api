@@ -107,11 +107,34 @@ describe('PlayerController', () => {
   describe('.delete', () => {
     context('with an unknown player id', () => {
       before(async () => {
-        await PlayerController.delete({ body: { id: 24 } }, { status });
+        Player.removeById.withArgs(58).returns(false);
+        await PlayerController.delete({ params: { id: 58 } }, { status });
+      });
+
+      after(() => {
+        sandbox.resetHistory();
       });
 
       it('returns status 404 with an empty body', async () => {
+        expect(Player.removeById).to.have.been.calledOnceWithExactly(58);
         expect(status).to.have.been.calledWithExactly(404);
+        expect(json).to.have.been.calledWithExactly(null);
+      });
+    });
+
+    context('with a known player id', () => {
+      before(async () => {
+        Player.removeById.withArgs(77).returns(true);
+        await PlayerController.delete({ params: { id: 77 } }, { status });
+      });
+
+      after(() => {
+        sandbox.resetHistory();
+      });
+
+      it('returns status 204 with an empty body', async () => {
+        expect(Player.removeById).to.have.been.calledOnceWithExactly(77);
+        expect(status).to.have.been.calledWithExactly(204);
         expect(json).to.have.been.calledWithExactly(null);
       });
     });
