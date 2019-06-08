@@ -11,7 +11,7 @@ module.exports = {
     if (!player) {
       return res.status(404).json(null);
     }
-    return res.status(200).json(player)
+    return res.status(200).json(player);
   },
   delete: async (req, res, next) => (
     res.status(404).json(null)
