@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "lint": "eslint .",
-    "test:unit": "nyc --reporter=lcov --reporter=text mocha --recursive spec/controllers",
+    "test:unit": "nyc --reporter=lcov --reporter=text mocha --recursive spec/models spec/controllers",
     "test:integration": "nyc --reporter=lcov --reporter=text mocha --recursive spec/routes"
   },
   "dependencies": {
