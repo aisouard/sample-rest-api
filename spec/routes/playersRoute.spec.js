@@ -18,10 +18,10 @@ describe('GET /players', () => {
 
   context('with a database containing some players', () => {
     before(() => {
-      Player.seed([
+      Player.repository = [
         { id: 58, firstname: 'William', lastname: 'Doe' },
         { id: 32, firstname: 'John', lastname: 'Smith' }
-      ]);
+      ];
     });
 
     it('responds with an array contaning the players sorted by their id', async () => (
