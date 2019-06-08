@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "lint": "eslint .",
     "test:unit": "nyc --reporter=lcov --reporter=text mocha --recursive spec/models spec/controllers",
     "test:integration": "nyc --reporter=lcov --reporter=text mocha --recursive spec/routes"
@@ -19,7 +19,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",
     "mocha": "^6.1.4",
-    "nodemon": "^1.19.1",
     "nyc": "^14.1.1",
     "rewire": "^4.0.1",
     "sinon": "^7.3.2",
